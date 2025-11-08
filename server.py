@@ -5,6 +5,7 @@ import certifi
 import dotenv
 from datetime import datetime, timedelta, timezone
 from pymongo import MongoClient, errors
+from pymongo.errors import BulkWriteError
 
 dotenv.load_dotenv()
 
@@ -24,7 +25,7 @@ DONKI_MPC_URL = "https://api.nasa.gov/DONKI/MPC"
 def get_last_day_range():
     """Return start and end date (UTC, YYYY-MM-DD) for the last 24 hours."""
     now = datetime.now(timezone.utc)
-    yesterday = now - timedelta(days=3)
+    yesterday = now - timedelta(days=2)
     return yesterday.strftime("%Y-%m-%d"), now.strftime("%Y-%m-%d")
 
 
@@ -161,12 +162,31 @@ def make_db_client():
 
 def main():
     client = make_db_client()
+    db = client["solarweather"]         
+    collection = db["events"]
+
+    collection.create_index("flrID", unique=True, sparse=True)
+    collection.create_index("activityID", unique=True, sparse=True)
+    collection.create_index("mpcID", unique=True, sparse=True)
+    collection.create_index("gstID", unique=True, sparse=True)
+
     while True:
         start_date, end_date = get_last_day_range()
         print(f"Fetching DONKI data from {start_date} to {end_date}...\n")
+
         try:
             events = update_events(start_date, end_date)
             print_all_events(events)
+            if events:
+                try:
+                    result = collection.insert_many(events, ordered=False)
+                    print(f"Inserted {len(result.inserted_ids)} events.")
+                except BulkWriteError as e:
+                    inserted_count = e.details.get("nInserted", 0)
+                    skipped_count = len(e.details.get("writeErrors", []))
+                    print(f"Inserted {inserted_count} events, skipped {skipped_count} duplicates.")
+            else:
+                print("No events to insert.")
         except requests.RequestException as e:
             print(f"Error fetching data from NASA DONKI API: {e}")
         time.sleep(5*60)
