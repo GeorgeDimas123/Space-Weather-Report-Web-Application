@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 DONKI_FLR_URL = "https://api.nasa.gov/DONKI/FLR"
 DONKI_CME_URL = "https://api.nasa.gov/DONKI/CME"
 DONKI_GST_URL = "https://api.nasa.gov/DONKI/GST"
+DONKI_IPS_URL = "https://api.nasa.gov/DONKI/IPS"
 
 API_KEY = "dahNGdR4VeXrHHIC6d4b4s595lOFCADoWNIZUL16"
 
@@ -57,10 +58,20 @@ def print_gst(gst):
     print("-" * 60)
     print()
 
+def print_ips(ips):
+    print("INTERPLANETARY SHOCK")
+    print(f"ID: {ips.get('activityID', 'N/A')}")
+    print(f"Start Time: {ips.get('eventTime', 'N/A')}")
+    print(f"Location: {ips.get('location', 'N/A')}")
+    print(f"Catalog: {ips.get('catalog', 'N/A')}")
+    print(f"Link: {ips.get('link', 'N/A')}")
+    print("-" * 60)
+    print()
+
 
 #this function just serves to get around the "start time" members having different names
 def parse_time(event):
-    time_str = event.get("beginTime") or event.get("startTime")
+    time_str = event.get("beginTime") or event.get("startTime") or event.get("eventTime")
     if not time_str:
         return datetime.min
     try:
@@ -79,17 +90,19 @@ def main():
         flares = fetch_donki_data(DONKI_FLR_URL, start_date, end_date)
         cmes = fetch_donki_data(DONKI_CME_URL, start_date, end_date)
         gsts = fetch_donki_data(DONKI_GST_URL, start_date, end_date)
+        shocks = fetch_donki_data(DONKI_IPS_URL, start_date, end_date)
         for flare in flares:
             flare["eventType"] = "FLR"
         for cme in cmes:
             cme["eventType"] = "CME"
         for gst in gsts:
             gst["eventType"] = "GST"
-        
+        for shock in shocks:
+            shock["eventType"] = "IPS"        
 
 
 
-        events = flares + cmes + gsts
+        events = flares + cmes + gsts + shocks
         events.sort(key=parse_time, reverse=True)
         for event in events:
             match event["eventType"]:
@@ -99,6 +112,8 @@ def main():
                     print_cme(event)
                 case 'GST':
                     print_gst(event)
+                case 'IPS':
+                    print_ips(event)
 
 
         # Print both sets
