@@ -5,7 +5,7 @@ DONKI_FLR_URL = "https://api.nasa.gov/DONKI/FLR"
 DONKI_CME_URL = "https://api.nasa.gov/DONKI/CME"
 
 
-API_KEY = "DEMO_KEY"
+API_KEY = "dahNGdR4VeXrHHIC6d4b4s595lOFCADoWNIZUL16"
 
 
 def get_last_day_range():
@@ -25,6 +25,29 @@ def fetch_donki_data(url, start_date, end_date):
     response = requests.get(url, params=params, timeout=15)
     response.raise_for_status()
     return response.json()
+
+def print_flare(flare):
+    print(f"ID: {flare.get('flrID', 'N/A')}")
+    print(f"Class: {flare.get('classType', 'Unknown')}")
+    print(f"Begin Time: {flare.get('beginTime', 'N/A')}")
+    print(f"Peak Time: {flare.get('peakTime', 'N/A')}")
+    print(f"Source Location: {flare.get('sourceLocation', 'N/A')}")
+    print(f"Active Region: {flare.get('activeRegionNum', 'N/A')}")
+    print(f"Link: {flare.get('link', 'N/A')}")
+    print("-" * 60)
+    print()
+
+def print_cme(cme):
+    print(f"ID: {cme.get('activityID', 'N/A')}")
+    print(f"Start Time: {cme.get('startTime', 'N/A')}")
+    print(f"Source Location: {cme.get('sourceLocation', 'N/A')}")
+    print(f"Note: {cme.get('note', 'N/A')}")
+    print(f"Link: {cme.get('link', 'N/A')}")
+    print("-" * 60)
+    print()
+
+
+
 
 
 def print_solar_flares(flares):
@@ -73,9 +96,27 @@ def main():
         # Fetch CMEs
         cmes = fetch_donki_data(DONKI_CME_URL, start_date, end_date)
         
+        for flare in flares:
+            flare["eventType"] = "FLR"
+
+        for cme in cmes:
+            cme["eventType"] = "CME"
+        
+
+
+
+        events = flares + cmes
+        for event in events:
+            match event["eventType"]:
+                case 'FLR':
+                    print_flare(event)
+                case 'CME':
+                    print_cme(event)
+
+
         # Print both sets
-        print_solar_flares(flares)
-        print_cmes(cmes)
+        #print_solar_flares(flares)
+        #print_cmes(cmes)
 
     except requests.RequestException as e:
         print(f"Error fetching data from NASA DONKI API: {e}")
