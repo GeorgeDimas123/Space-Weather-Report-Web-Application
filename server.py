@@ -2,11 +2,14 @@ import requests
 import time
 import os
 import certifi
+import dotenv
 from datetime import datetime, timedelta, timezone
 from pymongo import MongoClient, errors
 
-API_KEY = os.environ.get("NASA_DONKI_API") 
-MONGO_URI = os.environ.get("MONGO_URI")  
+dotenv.load_dotenv()
+
+API_KEY = os.environ.get("NASA_DONKI_API")  if os.environ.get("NASA_DONKI_API") else dotenv.get_key('.env', 'NASA_DONKI_API')
+MONGO_URI = os.environ.get("MONGO_URI") if os.environ.get("MONGO_URI") else dotenv.get_key('.env', 'MONGO_URI')
 FETCH_INTERVAL_SECONDS = int(os.environ.get("DONKI_FETCH_INTERVAL", "600")) 
 
 
