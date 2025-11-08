@@ -1,27 +1,46 @@
-// More advanced infinite scrolling with layer duplication
+const baseTransforms = {
+  background: 'translateZ(-10px) scale(2)',
+  foreground: 'translateZ(-5px) scale(1.5)'
+};
+
 function initInfiniteParallax() {
   const layers = [
-    { element: document.querySelector('.background'), speed: 0.2 },
-    { element: document.querySelector('.foreground'), speed: 0.5 }
+    { key: 'background', element: document.querySelector('.background'), speed: 0.2 },
+    { key: 'foreground', element: document.querySelector('.foreground'), speed: 0.5 }
   ];
 
-  // Duplicate each layer for seamless looping
   layers.forEach(layer => {
     const clone = layer.element.cloneNode(true);
-    clone.style.transform = 'translateY(100%)';
     layer.element.parentElement.appendChild(clone);
     layer.clone = clone;
   });
 
-  window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
-    
+  function update() {
+    const scrollY = document.querySelector('.wrapper').scrollTop;
+    const h = window.innerHeight;
+
     layers.forEach(layer => {
-      const offset = (scrollY * layer.speed) % window.innerHeight;
-      layer.element.style.transform = `translateY(${offset}px)`;
-      layer.clone.style.transform = `translateY(${offset - window.innerHeight}px)`;
+      const offset = (scrollY * layer.speed) % h;
+
+      const base = baseTransforms[layer.key];
+
+      layer.element.style.transform =
+        `${base} translateY(${offset}px)`;
+
+      layer.clone.style.transform =
+        `${base} translateY(${offset - h}px)`;
     });
-  });
+
+    requestAnimationFrame(update);
+  }
+
+  update();
 }
 
-initInfiniteParallax();
+initInfiniteParallax()
+
+async function fetchEvents(page = 0) {
+  const response = await fetch(`/api/events?page=${page}`);
+  const events = await response.json();
+  return events;
+}
