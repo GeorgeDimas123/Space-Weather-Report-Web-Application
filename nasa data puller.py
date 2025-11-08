@@ -1,4 +1,5 @@
 import requests
+import time
 from datetime import datetime, timedelta, timezone
 
 DONKI_FLR_URL = "https://api.nasa.gov/DONKI/FLR"
@@ -125,15 +126,15 @@ def parse_time(event):
 
 
 def main():
-    start_date, end_date = get_last_day_range()
-    print(f"Fetching DONKI data from {start_date} to {end_date}...\n")
-
-    try:
-        events = update_events(start_date, end_date)
-        print_all_events(events)
-    except requests.RequestException as e:
-        print(f"Error fetching data from NASA DONKI API: {e}")
-    input("Type anything to exit.")
+    while True:
+        start_date, end_date = get_last_day_range()
+        print(f"Fetching DONKI data from {start_date} to {end_date}...\n")
+        try:
+            events = update_events(start_date, end_date)
+            print_all_events(events)
+        except requests.RequestException as e:
+            print(f"Error fetching data from NASA DONKI API: {e}")
+        time.sleep(5*60)
 
 if __name__ == "__main__":
     main()
