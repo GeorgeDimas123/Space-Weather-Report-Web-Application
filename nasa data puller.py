@@ -5,6 +5,7 @@ DONKI_FLR_URL = "https://api.nasa.gov/DONKI/FLR"
 DONKI_CME_URL = "https://api.nasa.gov/DONKI/CME"
 DONKI_GST_URL = "https://api.nasa.gov/DONKI/GST"
 DONKI_IPS_URL = "https://api.nasa.gov/DONKI/IPS"
+DONKI_MPC_URL = "https://api.nasa.gov/DONKI/MPC"
 
 API_KEY = "dahNGdR4VeXrHHIC6d4b4s595lOFCADoWNIZUL16"
 
@@ -68,8 +69,50 @@ def print_ips(ips):
     print("-" * 60)
     print()
 
+def print_mpc(mpc):
+    print("MAGNETOPAUSE CROSSING")
+    print(f"ID: {mpc.get('mpcID', 'N/A')}")
+    print(f"Start Time: {mpc.get('eventTime', 'N/A')}")
+    print(f"Link: {mpc.get('link', 'N/A')}")
+    print("-" * 60)
+    print()
 
-#this function just serves to get around the "start time" members having different names
+
+def print_all_events(events):
+    for event in events:
+            match event["eventType"]:
+                case 'FLR':
+                    print_flare(event)
+                case 'CME':
+                    print_cme(event)
+                case 'GST':
+                    print_gst(event)
+                case 'IPS':
+                    print_ips(event)
+                case 'MPC':
+                    print_mpc(event)
+
+def update_events(start_date, end_date):
+    flares = fetch_donki_data(DONKI_FLR_URL, start_date, end_date)
+    cmes = fetch_donki_data(DONKI_CME_URL, start_date, end_date)
+    gsts = fetch_donki_data(DONKI_GST_URL, start_date, end_date)
+    shocks = fetch_donki_data(DONKI_IPS_URL, start_date, end_date)
+    mpcs = fetch_donki_data(DONKI_MPC_URL, start_date, end_date)
+    for flare in flares:
+        flare["eventType"] = "FLR"
+    for cme in cmes:
+        cme["eventType"] = "CME"
+    for gst in gsts:
+        gst["eventType"] = "GST"
+    for shock in shocks:
+        shock["eventType"] = "IPS"
+    for mpc in mpcs:
+        mpc["eventType"] = "MPC"   
+    events = flares + cmes + gsts + shocks + mpcs
+    events.sort(key=parse_time, reverse=True)
+    return events
+
+#this function just serves to get around the "start time" attributes having different names
 def parse_time(event):
     time_str = event.get("beginTime") or event.get("startTime") or event.get("eventTime")
     if not time_str:
@@ -86,40 +129,8 @@ def main():
     print(f"Fetching DONKI data from {start_date} to {end_date}...\n")
 
     try:
-        
-        flares = fetch_donki_data(DONKI_FLR_URL, start_date, end_date)
-        cmes = fetch_donki_data(DONKI_CME_URL, start_date, end_date)
-        gsts = fetch_donki_data(DONKI_GST_URL, start_date, end_date)
-        shocks = fetch_donki_data(DONKI_IPS_URL, start_date, end_date)
-        for flare in flares:
-            flare["eventType"] = "FLR"
-        for cme in cmes:
-            cme["eventType"] = "CME"
-        for gst in gsts:
-            gst["eventType"] = "GST"
-        for shock in shocks:
-            shock["eventType"] = "IPS"        
-
-
-
-        events = flares + cmes + gsts + shocks
-        events.sort(key=parse_time, reverse=True)
-        for event in events:
-            match event["eventType"]:
-                case 'FLR':
-                    print_flare(event)
-                case 'CME':
-                    print_cme(event)
-                case 'GST':
-                    print_gst(event)
-                case 'IPS':
-                    print_ips(event)
-
-
-        # Print both sets
-        #print_solar_flares(flares)
-        #print_cmes(cmes)
-
+        events = update_events(start_date, end_date)
+        print_all_events(events)
     except requests.RequestException as e:
         print(f"Error fetching data from NASA DONKI API: {e}")
     input("Type anything to exit.")
