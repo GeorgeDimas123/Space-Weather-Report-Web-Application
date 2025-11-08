@@ -6,15 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/sunIcon.png') }}">
   <title>Soliel: Space Weather Report</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+
   <div class="wrapper">
-    <header>
+    <div class="queueSlot"></div>
+
+    <div class="background">
+      <h1 class="title">Welcome to Soliel!</h1>
       <img src="{{ url_for('static', filename='img/starfield1.jpg') }}" class="background">
       <img src="{{ url_for('static', filename='img/starfield2.png') }}" class="foreground">
-      <h1 class="title">Welcome to Soliel!</h1>
-    </header>
+    </div>
+
   </div>
+  
 </body>
 </html>
