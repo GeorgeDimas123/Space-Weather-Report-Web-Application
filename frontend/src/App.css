@@ -93,8 +93,14 @@ html, body, .App {
 
 
 .App-link {
+  margin-top: 20px;        /* space from the grid */
+  display: inline-block;
   color: #61dafb;
   text-decoration: none;
+  font-size: 0.9rem;       /* shrink font slightly */
+  word-break: break-word;  /* prevent overflow on small screens */
+  max-width: 90%;          /* keep it within the container */
+  text-align: center;      /* center if it wraps */
 }
 
 
