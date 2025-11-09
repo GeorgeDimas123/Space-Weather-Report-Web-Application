@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import starfield from './static/img/starfield1.jpg';
 import './App.css';
 import Table from './table';
 
@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <img src={starfield} className="App-starfield" alt="starfield" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
@@ -19,12 +19,7 @@ function App() {
           Learn React
         </a>
       </header>
-      <Table />
-      <button onClick={Test}>Test Button</button>
     </div>
   );
-}
-function Test() {
-  window.alert("Test");
 }
 export default App;
