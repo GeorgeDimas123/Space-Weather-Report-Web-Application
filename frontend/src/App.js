@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import Table from './table';
 
 function App() {
   return (
@@ -18,8 +19,12 @@ function App() {
           Learn React
         </a>
       </header>
+      <Table />
+      <button onClick={Test}>Test Button</button>
     </div>
   );
 }
-
+function Test() {
+  window.alert("Test");
+}
 export default App;
