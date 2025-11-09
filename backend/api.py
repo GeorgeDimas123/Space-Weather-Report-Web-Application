@@ -23,10 +23,9 @@ client = make_db_client()
 db = client["solarweather"]         
 collection = db["events"]
 
-# @app.route("/")
-# def index():
-#     # call url_for('static', ...) within templates instead of here
-#     return render_template("index.html")
+@app.route("/")
+def index():
+    return "API Online", 200
 
 def serialize_doc(doc):
     if isinstance(doc, dict):
