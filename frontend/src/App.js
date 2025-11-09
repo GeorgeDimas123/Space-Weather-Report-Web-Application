@@ -11,7 +11,7 @@ function App() {
 
         <div className="space-weather-grid">
 
-        <div class="phenomenon1">
+        <div class="phenomenon">
           <h3>Coronal Mass Ejection</h3>
           <div className="coronal-mass-ejection"></div>
           <img class="image1" src="images/coronal_mass_ejection_image.png" alt="cme_image"></img>
