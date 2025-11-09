@@ -1,6 +1,5 @@
-import starfield from './static/img/starfield1.jpg';
+import starfield from './starfield1.jpg';
 import './App.css';
-import Table from './table';
 
 function App() {
   return (
