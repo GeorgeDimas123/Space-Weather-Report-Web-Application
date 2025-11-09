@@ -34,6 +34,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={starfield} className="App-starfield" alt="starfield" />
+        <img src="/images/2D_starfield_detail_image.png" className="App-foreground" alt="foreground" />
         <h1>Welcome to Soleil!</h1>
         <h2>Soleil is the web application you need to monitor outer space's various weather phenomena</h2>
 
@@ -43,8 +44,11 @@ function App() {
             {cme ? (
               <>
                 <h3>Coronal Mass Ejection (CME)</h3>
-                <p>Time: {cme.eventTime}</p>
+                <p>Time: {cme.eventTime || "N/A"}</p>
+                <p>ID: {cme._ID || "N/A"}</p>
                 <p>Source: {cme.sourceLocation || "N/A"}</p>
+                <a href="https://en.wikipedia.org/wiki/Coronal_mass_ejection">Learn more about coronal mass ejections here!</a>
+                <img src="/images/coronal_mass_ejection_image.png" alt="Coronal Mass Ejection Diagram" />
               </>
             ) : <p>Loading...</p>}
           </div>
@@ -53,12 +57,15 @@ function App() {
             {flare ? (
               <>
                 <h3>Solar Flare (FLR)</h3>
-                <p>Time: {flare.eventTime}</p>
+                <p>Time: {flare.eventTime || "N/A"}</p>
+                <p>ID: {flare.flrID || "N/A"}</p>
                 <p>Class: {flare.classType || "N/A"}</p>
                 <p>Beginning type: {flare.beginTime || "N/A"}</p>
                 <p>Peak Time: {flare.peakTime || "N/A"}</p>
                 <p>Source Location: {flare.sourceLocation || "N/A"}</p>
                 <p>Active Region Number: {flare.activeRegionNum || "N/A"}</p>
+                <a href="https://science.nasa.gov/sun/solar-storms-and-flares/">Learn more about solar flares here!</a>
+                <img src="/images/solar_flares_image.png" alt="solar flare diagram" />
               </>
             ) : <p>Loading...</p>}
           </div>
@@ -67,8 +74,11 @@ function App() {
             {gst ? (
               <>
                 <h3>Geomagnetic Storm (GST)</h3>
-                <p>Time: {gst.eventTime}</p>
-                <p>Link: {gst.link ? <a href={gst.link} target="_blank" rel="noreferrer">{gst.link}</a> : "N/A"}</p>
+                <p>Time: {gst.eventTime || "N/A"}</p>
+                <p>ID: {gst.gstID || "N/A"}</p>
+                <p>Start Time: {gst.startTime || "N/A"}</p>
+                <a href="https://en.wikipedia.org/wiki/Geomagnetic_storm">Learn more about geomagnetic storms here!</a>
+                <img src="/images/geomagnetic_storms_image.png" alt="geomagnetic storm Diagram" />
               </>
             ) : <p>Loading...</p>}
           </div>
@@ -77,8 +87,12 @@ function App() {
             {ips ? (
               <>
                 <h3>Interplanetary Shock (IPS)</h3>
-                <p>Time: {ips.eventTime}</p>
+                <p>Time: {ips.eventTime || "N/A"}</p>
+                <p>ID: {ips.activityID || "N/A"}</p>
                 <p>Location: {ips.location || "N/A"}</p>
+                <p>Catalog: {ips.catalog || "N/A"}</p>
+                <a href="https://www.sciencedirect.com/topics/earth-and-planetary-sciences/interplanetary-shock-wave">Learn more about interplanetary shocks here!</a>
+                <img src="/images/interplanetory_shock_image.png" alt="Interplanetary Shock Diagram" />
               </>
             ) : <p>Loading...</p>}
           </div>

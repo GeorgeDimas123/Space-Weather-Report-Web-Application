@@ -7,11 +7,35 @@ html, body, .App {
 
 .space-weather-grid {
   display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  grid-template-rows: repeat(2, auto);   /* 2 rows */
   gap: 20px; 
   justify-items: center; 
   align-items: center;   
 }
 
+.App-starfield {
+  position: fixed;         /* stays in place while scrolling */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+/* Foreground starfield (closer layer) */
+.App-foreground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  pointer-events: none; /* lets clicks pass through */
+  opacity: 0.7; /* optional for blending */
+}
 
 h3 {
   color: white;
@@ -25,8 +49,8 @@ h3 {
   border: 2px solid #61dafb;
   border-radius: 8px;
   background-color: rgba(0, 0, 0, 0.5);
-  height: 200px;
-  width: 300px;
+  height: 800px;
+  width: 600px;
 }
 
 .solar-flares{
@@ -35,8 +59,8 @@ h3 {
   border: 2px solid #ff4500;
   border-radius: 8px;
   background-color: rgba(0, 0, 0, 0.5);
-  height: 200px;
-  width: 300px;
+  height: 800px;
+  width: 600px;
 }
 
 .geomagnetic-storms{
@@ -45,8 +69,8 @@ h3 {
   border: 2px solid #32cd32;
   border-radius: 8px;
   background-color: rgba(0, 0, 0, 0.5);
-  height: 200px;
-  width: 300px;
+  height: 600px;
+  width: 600px;
 }
 
 .interplanetary-shocks{
@@ -55,6 +79,8 @@ h3 {
   border: 2px solid #ffa500;
   border-radius: 8px;
   background-color: rgba(0, 0, 0, 0.5);
+  height: 600px;
+  width: 600px;
 }
 
 .App-starfield {
@@ -96,6 +122,14 @@ h3 {
   text-align: center;      /* center if it wraps */
 }
 
+.space-weather-grid img {
+  display: block;
+  width: 150px;        /* adjust size as needed */
+  height: auto;        /* keeps proportions */
+  margin: 10px auto;   /* centers the image inside the box */
+  border-radius: 8px;  /* optional, matches box rounding */
+  object-fit: contain; /* ensures it fits even if not perfectly sized */
+}
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
