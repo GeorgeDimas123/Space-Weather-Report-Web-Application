@@ -15,8 +15,8 @@ html, body, .App {
 }
 
 .space-weather-grid div {
-  height: 100px;
-  width: 200px;
+  height: 180px;
+  width: 700px;
   padding: 10px;
   border-radius: 8px;
   background-color: rgba(0,0,0,0.5);
@@ -51,8 +51,6 @@ html, body, .App {
   border: 2px solid #32cd32;
   border-radius: 8px;
   background-color: rgba(0, 0, 0, 0.5);
-  height: 100px;
-  width: 200px;
 }
 
 .interplanetary-shocks{
