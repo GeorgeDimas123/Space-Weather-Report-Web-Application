@@ -5,6 +5,64 @@ html, body, .App {
   text-align: center;
 }
 
+.space-weather-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  grid-template-rows: repeat(2, auto);   /* 2 rows */
+  gap: 20px; 
+  justify-items: center; 
+  align-items: center;   
+}
+
+.space-weather-grid div {
+  height: 100px;
+  width: 200px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+}
+
+
+.coronal-mass-ejection{
+  margin: 20px;
+  padding: 10px;
+  border: 2px solid #61dafb;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.solar-flares{
+  margin: 20px;
+  padding: 10px;
+  border: 2px solid #ff4500;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.geomagnetic-storms{
+  margin: 20px;
+  padding: 10px;
+  border: 2px solid #32cd32;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100px;
+  width: 200px;
+}
+
+.interplanetary-shocks{
+  margin: 20px;
+  padding: 10px;
+  border: 2px solid #ffa500;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
 .App-starfield {
   position: absolute;
   top: 0;
